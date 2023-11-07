@@ -4,13 +4,32 @@ const global = {
   currentPage: window.location.pathname,
 };
 
-//3. Function to highlight active link on the nav when select
-function highlightActiveLink() {}
+//4. Fetch data from TMDB API
+async function fetchAPIData(endpoint) {
+  const API_KEY = "428bc575ccb6a7d4d8c221c9fa4718df"; //include for learning purpose ONLY, normally would have it in the dot env file on the backend server side for protection
+  const API_URL = "https://api.themoviedb.org/3/";
+  const response = await fetch(
+    `${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`
+  );
+  const data = await response.json();
+
+  console.log(data);
+}
+
+//3. Function to highlight active link on the navbar when selected
+function highlightActiveLink() {
+  const links = document.querySelectorAll(".nav-link");
+  links.forEach((link) => {
+    if (link.getAttribute("href") === global.currentPage) {
+      link.classList.add("active");
+    }
+  });
+}
 
 console.log(global.currentPage);
 
 //2. Init App
-//These are our simple rounters
+//These are simple rounters
 //Whatever functions we want to run for each page, put inside of that case
 function init() {
   //2a. to check current page, using switch() instead of using multiple if statements
@@ -34,6 +53,8 @@ function init() {
       console.log("Search");
       break;
   }
+
+  highlightActiveLink();
 }
 
 document.addEventListener("DOMContentLoaded", init);
