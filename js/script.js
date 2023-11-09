@@ -4,11 +4,36 @@ const global = {
   currentPage: window.location.pathname,
 };
 
-//5. Function to display Popular Movies
+// 5. Function to display Popular Movies
 async function displayPopularMovies() {
-  //add curly bracket {} around the results is for destruturing. It extracts the results property from object return and assign them to variables with the same name.
-  const { results } = await fetchAPIData("movie/popular"); //call the fetch API Data and passing the endpoint
-  console.log(results);
+  // add curly bracket {} around the results is for destructuring.
+  // It extracts the results property from object return and assigns them to variables with the same name.
+  const { results } = await fetchAPIData("movie/popular"); // call the fetch API Data and passing the endpoint
+  console.log(results); // return array of objects
+
+  // 5A. Create dynamic HTML elements here, need to loop through the results
+  results.forEach((movie) => {
+    const div = document.createElement("div");
+    div.classList.add("card");
+    div.innerHTML = `
+      <a href="movie-details.html?id=${movie.id}">
+        ${
+          movie.poster_path
+            ? `<img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" class="card-img-top" alt="${movie.title}" />`
+            : `<img src="images/no-image.jpg" class="card-img-top" alt="Movie Title" />`
+        }
+      </a>
+      <div class="card-body">
+        <h5 class="card-title">${movie.title}</h5>
+        <p class="card-text">
+          <small class="text-muted">Release: ${movie.release_date}</small>
+        </p>
+      </div>
+    `;
+
+    //5B - put the created div into the DOM
+    document.querySelector("#popular-movies").appendChild(div);
+  });
 }
 
 //4. Function to Fetch data from TMDB API
