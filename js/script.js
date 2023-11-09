@@ -4,7 +4,14 @@ const global = {
   currentPage: window.location.pathname,
 };
 
-//4. Fetch data from TMDB API
+//5. Function to display Popular Movies
+async function displayPopularMovies() {
+  //add curly bracket {} around the results is for destruturing. It extracts the results property from object return and assign them to variables with the same name.
+  const { results } = await fetchAPIData("movie/popular"); //call the fetch API Data and passing the endpoint
+  console.log(results);
+}
+
+//4. Function to Fetch data from TMDB API
 async function fetchAPIData(endpoint) {
   const API_KEY = "428bc575ccb6a7d4d8c221c9fa4718df"; //include for learning purpose ONLY, normally would have it in the dot env file on the backend server side for protection
   const API_URL = "https://api.themoviedb.org/3/";
@@ -13,7 +20,7 @@ async function fetchAPIData(endpoint) {
   );
   const data = await response.json();
 
-  console.log(data);
+  return data;
 }
 
 //3. Function to highlight active link on the navbar when selected
@@ -38,7 +45,8 @@ function init() {
   ) {
     case "/": //if /
     case "/index.html":
-      console.log("Home"); //then log 'Home
+      // console.log("Home"); //then log 'Home
+      displayPopularMovies();
       break;
     case "/shows.html": //if /shows.html
       console.log("Shows"); //then log 'Home
